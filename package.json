@@ -1,0 +1,38 @@
+{
+  "name": "filesharingappmern",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "aws-sdk": "^2.421.0",
+    "bcrypt": "^3.0.6",
+    "classnames": "^2.2.6",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "express-react-views": "^0.11.0",
+    "hbs": "^4.0.4",
+    "history": "^4.7.2",
+    "http-errors": "~1.6.2",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.4.7",
+    "morgan": "~1.9.0",
+    "multer": "^1.4.1",
+    "multer-s3": "^2.9.0",
+    "nodemailer": "^5.1.1",
+    "nodemon": "^1.19.1",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-router": "^4.3.1",
+    "redux": "^4.0.1",
+    "update": "^0.7.4"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.8.2"
+  }
+}
