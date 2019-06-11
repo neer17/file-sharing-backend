@@ -10,15 +10,15 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-const fileModel = require('./../models/file')
-const postModel = require('./../models/post')
-const practiceModel = require('./../models/practiceModel')
-const userModel = require('./../models/user')
+const fileModel = require('../modals/file')
+const postModel = require('../modals/post')
+const practiceModel = require('../modals/practiceModel')
+const userModel = require('../modals/user')
 const DownloadZip = require('./../helpers/downloadZip')
 const sendMail = require('./../helpers/nodeMailer')
 const {AWSConfig, AWSRegion} = require('./../helpers/AWSConfig')
 const {S3Download} = require('./../helpers/s3Download')
-const signInModel = require('./../models/sign-in')
+const signInModel = require('../modals/sign-in')
 
 const uploadDir = path.join(__dirname, '..', 'public', 'images')
 
@@ -81,7 +81,7 @@ const upload = multerConfig.array('photos')
 
 //  GET /
 router.get('/', function (req, res) {
-    res.send('this should be sent to front end')
+    res.send('Home route')
 })
 
 //  POST /
@@ -269,6 +269,8 @@ router.get('/downloadAllFiles/:id', (req, res) => {
  * This is used to send details of the user from "createUser.js" in React
  */
 router.post('/create_user', (req, res) => {
+    console.log('this log is from /crate_user')
+
     let doesUserExists = false
     const body = req.body
 
