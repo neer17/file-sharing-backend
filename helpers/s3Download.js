@@ -11,7 +11,7 @@ class S3Download {
         const s3 = this.app.s3
 
         const object = s3.getObject({
-            Bucket: 'filesharingapp',
+            Bucket: 'file-sharing-app',
             Key: file.filename
         }).createReadStream()
 
@@ -25,7 +25,7 @@ class S3Download {
         //  getObject would fetch the data from the s3 bucket
         //  and read stream would help to fetch the data without getting it stored in the buffer
         const object = s3.getObject({
-            Bucket: 'filesharingapp',
+            Bucket: 'file-sharing-app',
             Key: file.filename
         }).createReadStream()
 
@@ -41,7 +41,7 @@ class S3Download {
         const s3 = this.app.s3
 
         const options = {
-            Bucket: 'filesharingapp',
+            Bucket: 'file-sharing-app',
             Key: file.filename,
             Expires: 3600
         }

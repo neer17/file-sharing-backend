@@ -63,7 +63,7 @@ router.s3 = s3
 const multerConfig = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'filesharingapp',
+        bucket: 'file-sharing-app',
         acl: 'public-read',
         metadata: function (req, file, cb) {
             cb(null, {
@@ -177,6 +177,8 @@ router.post('/upload-file', (req, res) => {
 
                     // console.log(`index.js postId ==> ${postId} \t to ==> ${to} \t from ==> ${from} \t message ==> ${message}`)
 
+                    /*
+                    * both the steps below are independent of each other that's why no chaining of promises is done */
                     //  sending the mail to the user
                     sendMail(postId, to, from, message)
                         .then((response) => console.log('sendmail response ==> ', response))
@@ -185,7 +187,7 @@ router.post('/upload-file', (req, res) => {
                             return res.json(err)
                         })
 
-                    //  sending this to the frontend
+                    //  sending details of the post to the front-end
                     return res.json({
                         file: res1
                     })
@@ -200,9 +202,9 @@ router.post('/upload-file', (req, res) => {
 })
 
 //  GET /upload-file
-router.get('/upload-file', (req, res) => {
-    // console.log(`Inside GET upload-file ==> `, res)
-})
+// router.get('/upload-file', (req, res) => {
+//     // console.log(`Inside GET upload-file ==> `, res)
+// })
 
 //  GET /download/:id
 /**
@@ -247,6 +249,7 @@ router.get('/share/:id', (req, res) => {
         if (err)
             return res.json(err)
 
+        //  sending the post found to the front-end
         res.json(result)
     })
 })

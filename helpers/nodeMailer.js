@@ -1,5 +1,7 @@
 const nodemailer = require("nodemailer")
 
+const url = require('./domainConfig')
+
 // async..await is not allowed in global scope, must use a wrapper
 async function sendEmail(postId, to, from, message) {
     console.log(`nodeMailer.js  postId ==> ${postId} \t to ==> ${to} \t from ==> ${from} \t message ==> ${message}`)
@@ -20,6 +22,7 @@ async function sendEmail(postId, to, from, message) {
         }
     })
 
+    console.log('nodeMailer.js message ==> ', message)
     // setup email data with unicode symbols
     let mailOptions = {
         from, // sender address
@@ -27,7 +30,7 @@ async function sendEmail(postId, to, from, message) {
         subject: `${from} has sent you some files`, // Subject line
         text: message, // plain text body
         //  redirecting the user to the front end
-        html: `<p><a href="http://localhost:3000/share/${postId}">Click here to see the files</a></p>`
+        html: `<p><a href="${url}/share/${postId}">Click here to see the files</a></p>`
     }
 
     // send mail with defined transport object
