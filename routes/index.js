@@ -10,15 +10,15 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-const fileModel = require('../modals/file')
-const postModel = require('../modals/post')
-const practiceModel = require('../modals/practiceModel')
-const userModel = require('../modals/user')
+const fileModel = require('../models/file')
+const postModel = require('../models/post')
+const practiceModel = require('../models/practiceModel')
+const userModel = require('../models/user')
 const DownloadZip = require('./../helpers/downloadZip')
 const sendMail = require('./../helpers/nodeMailer')
 const {AWSConfig, AWSRegion} = require('./../helpers/AWSConfig')
 const {S3Download} = require('./../helpers/s3Download')
-const signInModel = require('../modals/sign-in')
+const signInModel = require('../models/sign-in')
 
 const uploadDir = path.join(__dirname, '..', 'public', 'images')
 
@@ -107,7 +107,7 @@ router.post('/upload-file', (req, res) => {
         }
 
         //  getting the files from the req(from front end)
-        /*console.log('index.js req ==> ', req)*/
+        console.log('index.js req ==> ', req)
         const files = req.files
         console.log('index.js files from multer s3 files ==> ', files)
 
@@ -236,7 +236,7 @@ router.get('/download/:id', (req, res) => {
         let url = downloader.downloadFaster(result)
         console.log('index.js downloadFaster url ==> ', url)
         res.attachment(result.filename)
-        res.redirect(url.toString())
+        
     }).catch((err) => {
         console.log(err)
     })
@@ -377,7 +377,6 @@ router.post('/sign-in', async (req, res) => {
     }
 })
 
-//  GET /check-validation
 /**
  * making a request to this in every x seconds from "home.js" from the front-end
  */

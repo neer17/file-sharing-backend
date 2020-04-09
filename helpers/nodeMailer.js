@@ -4,7 +4,7 @@ const url = require('./domainConfig')
 
 // async..await is not allowed in global scope, must use a wrapper
 async function sendEmail(postId, to, from, message) {
-    console.log(`nodeMailer.js  postId ==> ${postId} \t to ==> ${to} \t from ==> ${from} \t message ==> ${message}`)
+    // console.log(`nodeMailer.js  postId ==> ${postId} \t to ==> ${to} \t from ==> ${from} \t message ==> ${message}`) 
 
 
     /*// Generate test SMTP service account from ethereal.email
@@ -30,16 +30,16 @@ async function sendEmail(postId, to, from, message) {
         subject: `${from} has sent you some files`, // Subject line
         text: message, // plain text body
         //  redirecting the user to the front end
-        html: `<p><a href="${url}/share/${postId}">Click here to see the files</a></p>`
+        html: `<p><a href="${url}/downloadAllFiles/${postId}">Click here to download the files</a></p>`
     }
 
     // send mail with defined transport object
     let info = await transporter.sendMail(mailOptions)
 
-    console.log("Message sent: %s", info.messageId)
+    /* console.log("Message sent: %s", info.messageId)
     // Preview only available when sending through an Ethereal account
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
-
+ */
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }

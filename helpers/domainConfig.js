@@ -1,5 +1,6 @@
-const production = true
+const production = false
 
-const url = production ? 'https://file-sharing-app-back-end.herokuapp.com' : 'http://localhost:3001'
+//  URL of backend
+const url = production ? 'https://file-sharing-app-back-end.herokuapp.com' : 'http://localhost:3003'
 
 module.exports = url
