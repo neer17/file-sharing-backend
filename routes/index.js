@@ -81,26 +81,23 @@ const multerConfig = multer({
 })
 const upload = multerConfig.array("photos")
 
-//  GET /
 router.get("/", function (req, res) {
   res.send("Home route")
 })
 
-//  POST /
 router.post("/", (req, res) => {
   res.send("From POST /")
 })
 
-//  POST upload-file
 /**
- * To upload file locally or to S3
+ * working: Enter files in "fileModel",
+ * then enter user and fie info in "postModel",
+ * finally send a mail followed by sending "post" entered to user
  */
-router.post("/upload-file", (req, res) => {
-  upload(req, res, function (err) {
-    let to = "",
-      from = "",
-      message = ""
+router.post("/upload-file", async (req, res) => {
+  const ROUTE_TAG = "POST /upload-file:\t"
 
+  upload(req, res, async function (err) {
     // checking for any errors
     if (err instanceof multer.MulterError) {
       return console.log(`Error: from Multer ==> ${err}`)
@@ -109,24 +106,16 @@ router.post("/upload-file", (req, res) => {
       return res.json(err)
     }
 
-    //  getting the files from the req(from front end)
-    console.log("index.js req ==> ", req)
-    const files = req.files
-    console.log("index.js files from multer s3 files ==> ", files)
-
     /*const location = req.file.location
         console.log('index.js multer location ==> ', location)*/
-    //  getting fields from the frontend
-    //  may not be present on sending files from Postman
-    try {
-      to = req.body.to
-      from = req.body.from
-      message = req.body.message
-    } catch (err) {
-      console.log(err)
-    }
 
-    if (files.length >= 1) {
+    //  mongoose sometimes throws error while connecting with mLab @see catch blocks
+    try {
+      const files = req.files //  array of objects of file sent from front end
+      const to = req.body.to
+      const from = req.body.from
+      const message = req.body.message
+
       //  array of photos
       let fileArray = []
       files.forEach((file) => {
@@ -152,62 +141,40 @@ router.post("/upload-file", (req, res) => {
         })
       })
 
-      //  saving details of files in "File" document
-      fileModel
-        .insertMany(fileArray)
-        .then((response) => {
-          // console.log(`res after saving the files ==> ${response}`)
+      //  insert files
+      const filesMlab = await fileModel.insertMany(fileArray)
 
-          //  getting the file ids and storing them into an array
-          let fileIds = []
-          response.forEach((file) => {
-            fileIds.push(file.id)
-          })
+      console.log(ROUTE_TAG, "files")
 
-          let postObject = {
-            to,
-            from,
-            message,
-            fileIds,
-          }
+      let fileIds = []
+      filesMlab.forEach((file) => {
+        fileIds.push(file.id)
+      })
 
-          //  inserting data in "posts" document
-          postModel
-            .insertMany(postObject)
-            .then((res1) => {
-              console.log("posts document insertMany res1 ==> ", res1)
+      let postObject = {
+        to,
+        from,
+        message,
+        fileIds,
+      }
 
-              const postId = res1[0]._id
-              const to = res1[0].to
-              const from = res1[0].from
-              const message = res1[0].message
+      //  insert post
+      const post = await postModel.insertMany(postObject)
 
-              // console.log(`index.js postId ==> ${postId} \t to ==> ${to} \t from ==> ${from} \t message ==> ${message}`)
+      const postId = post[0]._id
 
-              /*
-               * both the steps below are independent of each other that's why no chaining of promises is done */
-              //  sending the mail to the user
-              sendMail(postId, to, from, message)
-                .then((response) =>
-                  console.log("sendmail response ==> ", response)
-                )
-                .catch((err) => {
-                  console.log(err)
-                  return res.json(err)
-                })
+      //  sending the mail
+      const mail = await sendMail(postId, to, from, message)
 
-              //  sending details of the post to the front-end
-              return res.json({
-                file: res1,
-              })
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      console.info(ROUTE_TAG, "mail: ", mail)
+      // sending the entered back to the frontend
+      res.json({
+        file: post,
+      })
+    } catch (error) {
+      // MongoError: server instance pool was destroyed
+      // this error might be thrown
+      console.error(error)
     }
   })
 })
@@ -452,12 +419,10 @@ function getPostById(postId, callback = () => {}) {
 }
 
 //  firebase create user route
-router.post("/store-token", (req, res) => {
+router.post("/firebase-create-user", (req, res) => {
   if (req.body) {
     const email = req.body.email
     const token = req.body.token
-
-    const userTokenModel = new UserTokenModel({ email, token })
 
     //  checking for prev entires
     UserTokenModel.findOneAndUpdate(

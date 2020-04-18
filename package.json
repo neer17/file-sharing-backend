@@ -9,6 +9,7 @@
     "archiver": "^3.0.0",
     "aws-sdk": "^2.421.0",
     "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
