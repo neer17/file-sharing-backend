@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express")
 const router = express.Router()
 const path = require("path")
@@ -213,8 +214,9 @@ router.get("/download/:id", (req, res) => {
 
       const downloader = new S3Download(router, res)
       let url = downloader.downloadFaster(result)
-      console.log("index.js downloadFaster url ==> ", url)
+      console.log(`url =>`, url)
       res.attachment(result.filename)
+      res.redirect(url.toString())
     })
     .catch((err) => {
       console.log(err)

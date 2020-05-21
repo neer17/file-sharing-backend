@@ -48,7 +48,7 @@ class S3Download {
 
         //  synchronous
         const url = s3.getSignedUrl('getObject', options)
-        console.log('s3Download fasterDownload url ==> ', url)
+        // console.log('s3Download fasterDownload url ==> ', url)
 
         return url
     }

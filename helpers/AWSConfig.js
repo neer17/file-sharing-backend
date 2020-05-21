@@ -1,6 +1,6 @@
 exports.AWSConfig = {
-    "accessKeyId": 'AKIAWK4GNDFQHB37GL6Y',
-    "secretAccessKey": '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',
+    "accessKeyId": `${process.env.AWS_ACCESS_KEY_ID}`,
+    "secretAccessKey": `${process.env.AWS_SECRET_ACCESS_KEY}`,
 }
 
 exports.AWSRegion = 'ap-south-1'
