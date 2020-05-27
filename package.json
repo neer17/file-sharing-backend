@@ -6,6 +6,7 @@
     "start": "set port=3003 && node ./bin/www"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.1.1",
     "archiver": "^3.0.0",
     "aws-sdk": "^2.421.0",
     "bcrypt": "^3.0.6",

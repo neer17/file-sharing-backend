@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config()
 const express = require("express")
 const router = express.Router()
 const path = require("path")
@@ -165,10 +165,9 @@ router.post("/upload-file", async (req, res) => {
       const postId = post[0]._id
 
       //  sending the mail
-      const mail = await sendMail(postId, to, from, message)
+      sendMail(postId, to, from, message)
 
-      console.info(ROUTE_TAG, "mail: ", mail)
-      // sending the entered back to the frontend
+      // sending the post back to the frontend
       res.json({
         file: post,
       })

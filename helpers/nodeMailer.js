@@ -1,37 +1,20 @@
-const nodemailer = require("nodemailer")
+const sgMail = require("@sendgrid/mail")
 
-const url = require('./domainConfig')
+const url = require("./domainConfig")
 
-// async..await is not allowed in global scope, must use a wrapper
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
 async function sendEmail(postId, to, from, message) {
-    /*// Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
-    let account = await nodemailer.createTestAccount();*/
-
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-        host: "smtp.sendgrid.net",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: 'apikey', // generated ethereal user
-            pass: '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' // generated ethereal password
-        }
-    })
-
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from, 
-        to,
-        subject: `${from} has sent you some files`, // Subject line
-        text: message, // plain text body
-        //  redirecting the user to the front end
-        html: `<p><a href="${url}/downloadAllFiles/${postId}">Click here to download the files</a></p>`
-    }
-
-    // send mail with defined transport object
-    let info = await transporter.sendMail(mailOptions)
-    return info
+  const msg = {
+    from,
+    to,
+    subject: `${from} has sent you some files`, // Subject line
+    text: message, // plain text body
+    //  redirecting the user to the front end
+    html: `<p><a href="${url}/downloadAllFiles/${postId}">Click here to download the files</a></p>`,
+  }
+  const info = await sgMail.send(msg)
+  console.info("mail sent info:", info)
 }
 
 module.exports = sendEmail
