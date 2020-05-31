@@ -166,7 +166,7 @@ router.post("/upload-file", async (req, res) => {
 
       //  sending the mail
       sendMail(postId, to, from, message)
-
+      
       // sending the post back to the frontend
       res.json({
         file: post,
