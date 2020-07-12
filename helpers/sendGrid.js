@@ -13,8 +13,9 @@ async function sendEmail(postId, to, from, message) {
     //  redirecting the user to the front end
     html: `<p><a href="${url}/downloadAllFiles/${postId}">Click here to download the files</a></p>`,
   }
+
   const info = await sgMail.send(msg)
-  console.info("mail sent info:", info)
+  // console.info("mail sent status code:", info.statusCode)
 }
 
 module.exports = sendEmail

@@ -7,6 +7,8 @@ const multerS3 = require("multer-s3")
 const mongoose = require("mongoose")
 const AWS = require("aws-sdk")
 const jwt = require("jsonwebtoken")
+const chalk = require('chalk')
+
 
 const bcrypt = require("bcrypt")
 const saltRounds = 10
@@ -16,13 +18,16 @@ const postModel = require("../models/post")
 const practiceModel = require("../models/practiceModel")
 const userModel = require("../models/user")
 const DownloadZip = require("./../helpers/downloadZip")
-const sendMail = require("./../helpers/nodeMailer")
+const sendMail = require("../helpers/sendGrid")
 const { AWSConfig, AWSRegion } = require("./../helpers/AWSConfig")
 const { S3Download } = require("./../helpers/s3Download")
 const signInModel = require("../models/sign-in")
 const UserTokenModel = require("../models/user-token")
 
 const uploadDir = path.join(__dirname, "..", "public", "images")
+
+//  for CHALK
+const log = console.log
 
 //  connecting to mLab
 mongoose.connect(
@@ -41,8 +46,9 @@ const secret = "shhhhhhh" //  secret for jwt
 router.s3 = s3
 
 /**
- * The following lines in the comments is for the local storage of media by Multer
+ * ! The following lines in the comments is for the local storage of media by Multer
  */
+
 //  MULTER storage config
 // const storageConfig = multer.diskStorage({
 //     destination: function (req, file, cb) {
@@ -63,7 +69,8 @@ router.s3 = s3
  */
 // const upload = multer({storage: storageConfig}).array('photos')
 
-//  MULTER-S3 for upload on S3
+
+//  * MULTER-S3 for upload on S3
 const multerConfig = multer({
   storage: multerS3({
     s3: s3,
@@ -165,7 +172,11 @@ router.post("/upload-file", async (req, res) => {
       const postId = post[0]._id
 
       //  sending the mail
-      sendMail(postId, to, from, message)
+      try {
+        await sendMail(postId, to, from, message)
+      }catch(err) {
+        console.error(err)
+      }
       
       // sending the post back to the frontend
       res.json({
@@ -237,7 +248,10 @@ router.get("/share/:id", (req, res) => {
 router.get("/downloadAllFiles/:id", (req, res) => {
   const postId = req.params.id
   getPostById(postId, (err, result) => {
-    if (err) return res.json(err)
+    if (err) {
+      console.error('/downloadAllFiles error: ', err)
+      return res.json(err)
+    }
 
     //  downloading the files
     const downloadZip = new DownloadZip(result, res, router)

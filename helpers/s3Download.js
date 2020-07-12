@@ -4,10 +4,10 @@ class S3Download {
         this.response = response
     }
 
+
+    // * getting the file or object from the bucket and returning it
     getObject(file) {
-        /*
-         *  getting the file or object from the bucket and returning it
-         */
+
         const s3 = this.app.s3
 
         const object = s3.getObject({
@@ -18,6 +18,7 @@ class S3Download {
         return object
     }
 
+    //  ! not using it anymore
     download(file) {
         const s3 = this.app.s3
         const res = this.response
@@ -36,6 +37,7 @@ class S3Download {
         object.pipe(res)
     }
 
+    // ! Not using it anymore
     downloadFaster(file) {
         console.log('===================== downloadFaster ========================')
         const s3 = this.app.s3
