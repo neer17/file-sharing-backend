@@ -31,7 +31,7 @@ const log = console.log
 
 //  connecting to mLab
 mongoose.connect(
-  "mongodb://neeraj:pontiac633725@ds135207.mlab.com:35207/file-sharing-app",
+  `${process.env.MONGODB_URI}`,
   { useNewUrlParser: true }
 )
 
