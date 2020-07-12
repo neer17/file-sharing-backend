@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "set port=3003 && nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "start-dev": "set port=3003 && nodemon ./bin/www"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
