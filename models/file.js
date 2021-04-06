@@ -9,39 +9,39 @@ const db = mongoose.connection
 db.on('error', console.error.bind(console, 'Connection Error'))
 //  in case of successful connection
 db.once('open', () => {
-    console.log('successfully connected to the database')
+  console.log('successfully connected to the database')
 })
 
 const Schema = mongoose.Schema
 
 const fileSchema = new Schema({
-    fieldname: {
-        type: String,
-        required: true
-    },
-    originalname: {
-        type: String,
-        required: true
-    },
-    mimetype: {
-        type: String,
-        required: true
-    },
-    filename: {
-        type: String,
-        required: true
-    },
-    size: {
-        type: Number,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        required: true
-    },
-    etag: {
-        type: String
-    }
+  fieldname: {
+    type: String,
+    required: true,
+  },
+  originalname: {
+    type: String,
+    required: true,
+  },
+  mimetype: {
+    type: String,
+    required: true,
+  },
+  filename: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: Number,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+  },
+  etag: {
+    type: String,
+  },
 })
 
 module.exports = mongoose.model('File', fileSchema)
