@@ -10,7 +10,7 @@
     "@fortawesome/fontawesome-free": "^5.8.2",
     "@sendgrid/mail": "^7.1.1",
     "archiver": "^5.0.2",
-    "aws-sdk": "^2.421.0",
+    "aws-sdk": "^2.814.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "chalk": "^4.1.0",
